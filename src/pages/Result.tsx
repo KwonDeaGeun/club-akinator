@@ -22,7 +22,6 @@ export default function Result() {
       <div className="relative mt-20 mb-8">
         <img
           src={mascotImg}
-          alt="짜잔!"
           className="w-32 h-auto object-contain absolute -top-16 left-1/2 -translate-x-1/2 z-10"
         />
 
