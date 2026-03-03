@@ -1,72 +1,65 @@
 import { create } from "zustand";
-import type { Answers } from "../utils/engine";
-import { QUIZ_QUESTIONS } from "../constants/questions";
+import { QUIZ_TREE } from "../constants/tree";
 
 interface QuizState {
   step: "intro" | "quiz" | "result";
-  currentStepIndex: number;
-  history: number[];
-  answers: Answers;
+  currentNodeId: string;
+  history: string[];
+  resultClubs: string[];
 
-  setAnswer: (questionId: number, score: number) => void;
+  setAnswer: (answer: "yes" | "no") => void;
   prevQuestion: () => void;
   resetQuiz: () => void;
 }
 
 export const useQuizStore = create<QuizState>((set) => ({
   step: "intro",
-  currentStepIndex: 0,
+  currentNodeId: "Q1",
   history: [],
-  answers: {},
+  resultClubs: [],
 
-  setAnswer: (questionId, score) => {
+  setAnswer: (answer) => {
     set((state) => {
-      const newAnswers = { ...state.answers, [questionId]: score };
-      const currentQuestion = QUIZ_QUESTIONS.find((q) => q.id === questionId);
-
-      let nextIndex = state.currentStepIndex + 1;
-
-      if (currentQuestion?.targetCategory && score > 0) {
-        nextIndex = 7;
+      const currentNode = QUIZ_TREE[state.currentNodeId];
+      if (!currentNode) {
+        return state;
+      }
+      const nextStep = currentNode[answer];
+      if (!nextStep) {
+        return state;
       }
 
-      if (questionId === 8 && score > 0) {
-        nextIndex = 11;
-      }
-
-      if (questionId === 14 && (!newAnswers[4] || newAnswers[4] <= 0)) {
-        nextIndex = 16;
-      }
-
-      if (questionId === 16 && newAnswers[4] > 0) {
-        nextIndex = 18;
-      }
-
-      if (nextIndex > 17) {
+      if (Array.isArray(nextStep)) {
         return {
-          answers: newAnswers,
           step: "result",
-          history: [...state.history, state.currentStepIndex],
+          resultClubs: nextStep,
+          history: [...state.history, state.currentNodeId],
         };
       }
 
       return {
-        answers: newAnswers,
-        currentStepIndex: nextIndex,
-        history: [...state.history, state.currentStepIndex],
+        currentNodeId: nextStep,
+        history: [...state.history, state.currentNodeId],
       };
     });
   },
+
   prevQuestion: () => {
     set((state) => {
       if (state.history.length === 0) return state;
       const newHistory = [...state.history];
-      const prevIndex = newHistory.pop()!;
-      return { currentStepIndex: prevIndex, history: newHistory };
+      const prevNodeId = newHistory.pop()!;
+
+      return {
+        step: "quiz",
+        currentNodeId: prevNodeId,
+        history: newHistory,
+        resultClubs: [],
+      };
     });
   },
 
   resetQuiz: () => {
-    set({ step: "intro", currentStepIndex: 0, history: [], answers: {} });
+    set({ step: "intro", currentNodeId: "Q1", history: [], resultClubs: [] });
   },
 }));
