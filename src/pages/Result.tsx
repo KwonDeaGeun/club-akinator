@@ -7,7 +7,15 @@ export default function Result() {
   const { resultClubs, resetQuiz, prevQuestion } = useQuizStore();
 
   const matchedClubs = useMemo(() => {
-    return clubsData.filter((club) => resultClubs.includes(club.name));
+    const byName = new Map(clubsData.map((club) => [club.name, club]));
+    const ordered: typeof clubsData = [];
+
+    for (const name of resultClubs) {
+      const club = byName.get(name);
+      if (club) ordered.push(club);
+    }
+
+    return ordered;
   }, [resultClubs]);
 
   return (

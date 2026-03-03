@@ -21,7 +21,13 @@ export const useQuizStore = create<QuizState>((set) => ({
   setAnswer: (answer) => {
     set((state) => {
       const currentNode = QUIZ_TREE[state.currentNodeId];
+      if (!currentNode) {
+        return state;
+      }
       const nextStep = currentNode[answer];
+      if (!nextStep) {
+        return state;
+      }
 
       if (Array.isArray(nextStep)) {
         return {
