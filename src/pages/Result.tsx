@@ -40,7 +40,7 @@ export default function Result() {
               {index === 0 && (
                 <img
                   src={mascotImg}
-                  className="w-32 h-auto object-contain absolute -top-16 left-1/2 -translate-x-1/2 z-10"
+                  className="w-24 h-auto object-contain absolute -top-16 left-1/2 -translate-x-1/2 z-10"
                 />
               )}
               <div
