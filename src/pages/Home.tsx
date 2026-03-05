@@ -18,7 +18,7 @@ export default function Home() {
         아키네이터
       </h1>
       <p className="text-slate-600 mb-12 text-lg font-medium">
-        마스코트가 당신에게 딱 맞는
+        위비가 당신에게 딱 맞는
         <br />
         동아리를 찾아줄게요!
       </p>
