@@ -86,7 +86,7 @@ export const QUIZ_TREE: Record<string, TreeNode> = {
     id: "Q11_D_1",
     text: "어린이를 대상으로 하나요?",
     yes: ["아이사랑"],
-    no: ["은가비"],
+    no: ["은가비", "Aegis"],
   },
   Q11_D_2: {
     id: "Q11_D_2",
@@ -123,7 +123,7 @@ export const QUIZ_TREE: Record<string, TreeNode> = {
   Q13: {
     id: "Q13",
     text: "게임 관련인가요?",
-    yes: ["놀이사랑", "M.O.D.E"],
+    yes: ["놀이사랑", "M.O.D.E", "Aegis"],
     no: "Q11_E",
   },
   Q11_E: {
